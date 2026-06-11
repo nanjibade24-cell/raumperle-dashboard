@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RAUMPERLE — Umsatzplan bis September 2026</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap');
+
+  :root {
+    --teal:       #1D9E75;
+    --teal-mid:   #158A63;
+    --teal-light: #E6F5EF;
+    --gold:       #B08A1A;
+    --gold-light: #FAF3DC;
+    --blue:       #2E6FD8;
+    --blue-light: #EAF1FC;
+    --purple:     #6B5FD4;
+    --purple-light:#EEECFA;
+    --red:        #C0392B;
+    --ink:        #1A1A18;
+    --ink-mid:    #4A4A46;
+    --ink-light:  #8A8A84;
+    --border:     #E4E4DF;
+    --bg:         #F8F8F5;
+    --white:      #FFFFFF;
+    --radius:     10px;
+    --radius-sm:  6px;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Inter', system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    min-height: 100vh;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+  /* ── Header ── */
+  .header {
+    background: var(--white);
+    border-bottom: 1px solid var(--border);
+    padding: 16px 28px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .header-left { display: flex; align-items: center; gap: 14px; }
+  .logo { font-size: 17px; font-weight: 600; color: var(--teal); letter-spacing: -.3px; }
+  .header-sub { font-size: 12px; color: var(--ink-light); }
+  .header-badge {
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    font-weight: 500;
+    padding: 5px 14px;
+    border-radius: 20px;
+    border: 1.5px solid var(--border);
+    color: var(--ink-mid);
+  }
+  .header-badge.ok { border-color: var(--teal); color: var(--teal); background: var(--teal-light); }
+  .header-badge.warn { border-color: #E0901A; color: #A06010; background: #FEF3DC; }
+
+  /* ── Layout ── */
+  .main { max-width: 1100px; margin: 0 auto; padding: 28px 24px 60px; }
+
+  /* ── Section label ── */
+  .slabel {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--ink-light);
+    margin: 32px 0 12px;
+  }
+  .slabel:first-child { margin-top: 0; }
+
+  /* ── Metric row ── */
+  .metrics { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+  @media (max-width: 700px) { .metrics { grid-template-columns: repeat(2,1fr); } }
+  .metric {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 14px 16px;
+  }
+  .metric-label { font-size: 11px; color: var(--ink-light); margin-bottom: 4px; }
+  .metric-val {
+    font-family: 'DM Mono', monospace;
+    font-size: 22px;
+    font-weight: 500;
+    color: var(--ink);
+  }
+  .metric-val.ok { color: var(--teal); }
+  .metric-val.warn { color: #C05010; }
+
+  /* ── Hebel cards ── */
+  .hebel-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+  @media (max-width: 900px) { .hebel-grid { grid-template-columns: repeat(2,1fr); } }
+  @media (max-width: 500px) { .hebel-grid { grid-template-columns: 1fr; } }
+
+  .hebel-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 16px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hebel-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+  }
+  .hebel-card.nl::before { background: var(--teal); }
+  .hebel-card.nk::before { background: var(--blue); }
+  .hebel-card.bk::before { background: var(--gold); }
+  .hebel-card.ex::before { background: var(--purple); }
+
+  .hcard-label { font-size: 11px; font-weight: 600; color: var(--ink-light); text-transform: uppercase; letter-spacing: .07em; margin-bottom: 4px; }
+  .hcard-val {
+    font-family: 'DM Mono', monospace;
+    font-size: 24px;
+    font-weight: 500;
+    margin-bottom: 10px;
+  }
+  .nl .hcard-val { color: var(--teal); }
+  .nk .hcard-val { color: var(--blue); }
+  .bk .hcard-val { color: var(--gold); }
+  .ex .hcard-val { color: var(--purple); }
+
+  .hcard-bar-bg { height: 5px; background: var(--bg); border-radius: 3px; overflow: hidden; margin-bottom: 10px; }
+  .hcard-bar-fill { height: 100%; border-radius: 3px; transition: width .4s ease; }
+  .nl .hcard-bar-fill { background: var(--teal); }
+  .nk .hcard-bar-fill { background: var(--blue); }
+  .bk .hcard-bar-fill { background: var(--gold); }
+  .ex .hcard-bar-fill { background: var(--purple); }
+
+  .hcard-rows { font-size: 12px; color: var(--ink-mid); }
+  .hcard-row { display: flex; justify-content: space-between; padding: 3px 0; border-top: 1px solid var(--border); }
+  .hcard-row:first-child { border-top: none; }
+  .hcard-row strong { color: var(--ink); font-weight: 500; }
+  .hcard-who { font-size: 11px; color: var(--ink-light); margin-top: 6px; }
+
+  /* ── Big table ── */
+  .table-wrap { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+  table.ptable { width: 100%; border-collapse: collapse; font-size: 13px; }
+  table.ptable th {
+    font-size: 11px; font-weight: 600; color: var(--ink-light);
+    text-transform: uppercase; letter-spacing: .07em;
+    padding: 10px 14px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+    background: var(--bg);
+  }
+  table.ptable th:not(:first-child) { text-align: right; }
+  table.ptable td { padding: 10px 14px; border-bottom: 1px solid var(--border); vertical-align: middle; }
+  table.ptable td:not(:first-child):not(:nth-child(2)) { text-align: right; font-family: 'DM Mono', monospace; font-size: 12px; }
+  table.ptable tr:last-child td { border-bottom: none; }
+  table.ptable tr.sub-total td { background: var(--bg); font-weight: 500; font-size: 12px; color: var(--ink-mid); }
+  table.ptable tr.grand-total td { background: var(--ink); color: var(--white); font-weight: 600; font-size: 14px; }
+  table.ptable tr.grand-total td:not(:first-child) { font-family: 'DM Mono', monospace; }
+  table.ptable tr:hover:not(.sub-total):not(.grand-total) td { background: var(--bg); }
+
+  .tag { display: inline-block; font-size: 11px; font-weight: 500; padding: 2px 8px; border-radius: 20px; white-space: nowrap; }
+  .tag-nl { background: var(--teal-light); color: var(--teal-mid); }
+  .tag-nk { background: var(--blue-light); color: var(--blue); }
+  .tag-bk { background: var(--gold-light); color: var(--gold); }
+  .tag-ex { background: var(--purple-light); color: var(--purple); }
+
+  input.qty-input {
+    width: 58px;
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    text-align: right;
+    padding: 4px 8px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    background: var(--bg);
+    color: var(--ink);
+    transition: border-color .15s;
+  }
+  input.qty-input:focus { outline: none; border-color: var(--teal); background: var(--white); }
+
+  /* ── Tabs ── */
+  .tabs { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 14px; }
+  .tab {
+    font-size: 13px; font-weight: 500;
+    padding: 6px 16px;
+    border-radius: 20px;
+    border: 1px solid var(--border);
+    background: var(--white);
+    color: var(--ink-mid);
+    cursor: pointer;
+    transition: all .15s;
+  }
+  .tab:hover { border-color: var(--teal); color: var(--teal); }
+  .tab.active { background: var(--teal); color: var(--white); border-color: var(--teal); }
+
+  /* ── Week plan ── */
+  .week-block { margin-bottom: 20px; }
+  .week-title {
+    font-size: 12px; font-weight: 600; color: var(--ink-mid);
+    padding: 6px 0; border-bottom: 1px solid var(--border);
+    margin-bottom: 8px; display: flex; justify-content: space-between;
+  }
+  .week-goal { font-weight: 400; color: var(--ink-light); }
+
+  table.wtable { width: 100%; border-collapse: collapse; font-size: 13px; }
+  table.wtable td { padding: 8px 10px; border-bottom: 1px solid var(--border); vertical-align: top; }
+  table.wtable tr:last-child td { border-bottom: none; }
+  table.wtable tr { cursor: pointer; }
+  table.wtable tr:hover td { background: var(--bg); }
+  table.wtable tr.done td { opacity: .45; }
+  table.wtable tr.done .task-main { text-decoration: line-through; }
+
+  .task-main { font-weight: 500; color: var(--ink); margin-bottom: 2px; }
+  .task-sub { font-size: 12px; color: var(--ink-light); line-height: 1.5; }
+  .who-badge {
+    font-size: 11px; font-weight: 600;
+    width: 26px; height: 26px;
+    border-radius: 50%;
+    display: inline-flex; align-items: center; justify-content: center;
+    background: var(--bg);
+    color: var(--ink-mid);
+    border: 1px solid var(--border);
+    flex-shrink: 0;
+  }
+  .check-cell { width: 28px; vertical-align: middle; }
+  .check-btn {
+    width: 18px; height: 18px;
+    border-radius: 4px;
+    border: 1.5px solid var(--border);
+    background: var(--white);
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    color: transparent;
+    font-size: 11px;
+    transition: all .1s;
+  }
+  .check-btn.checked { background: var(--teal); border-color: var(--teal); color: var(--white); }
+
+  .month-banner {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 12px 16px;
+    margin-bottom: 16px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .month-goal-label { font-size: 12px; color: var(--ink-light); }
+  .month-goal-text { font-size: 14px; font-weight: 500; color: var(--ink); }
+  .month-target { font-family: 'DM Mono', monospace; font-size: 20px; font-weight: 500; color: var(--teal); }
+
+  .note-box {
+    background: #FFFBEC;
+    border: 1px solid #E8D98A;
+    border-radius: var(--radius);
+    padding: 12px 16px;
+    font-size: 13px;
+    color: #5A4A00;
+    margin-bottom: 0;
+    line-height: 1.6;
+  }
+  .note-box strong { color: #3A3000; }
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="header-left">
+    <div class="logo">RAUMPERLE</div>
+    <div class="header-sub">Umsatzplan bis September 2026</div>
+  </div>
+  <div class="header-badge" id="header-badge">Lädt…</div>
+</header>
+
+<main class="main">
+
+  <!-- METRICS -->
+  <div class="slabel">Gesamtübersicht</div>
+  <div class="metrics">
+    <div class="metric"><div class="metric-label">Ziel</div><div class="metric-val">13.000 €</div></div>
+    <div class="metric"><div class="metric-label">Geplant</div><div class="metric-val" id="mv-total">—</div></div>
+    <div class="metric"><div class="metric-label">Differenz</div><div class="metric-val" id="mv-diff">—</div></div>
+    <div class="metric"><div class="metric-label">Aufgaben erledigt</div><div class="metric-val" id="mv-tasks">0 / 0</div></div>
+  </div>
+
+  <!-- HEBEL CARDS -->
+  <div class="slabel">Fortschritt je Hebel</div>
+  <div class="hebel-grid" id="hebel-grid"></div>
+
+  <!-- PRODUKTE TABELLE -->
+  <div class="slabel">Stückzahlen — editierbar</div>
+  <div class="note-box" style="margin-bottom:12px">
+    <strong>So nutzt du diese Tabelle:</strong> Trage in der Spalte „Stück" ein wie viele ihr verkaufen wollt — oder aktualisiere die Zahl wenn etwas verkauft wurde. Alle Summen passen sich automatisch an.
+  </div>
+  <div class="table-wrap">
+    <table class="ptable" id="ptable"></table>
+  </div>
+
+  <!-- AUFGABENPLAN -->
+  <div class="slabel">Aufgabenplan</div>
+  <div class="tabs" id="tabs"></div>
+  <div id="task-area"></div>
+
+</main>
+
+<script>
+// ── Data ──────────────────────────────────────────────────────────────
+const PRODUCTS = [
+  {cat:'Newsletter', tag:'nl', label:'Newsletter-Werbeplatz (2 Plätze)',     price:300,  qty:1,  who:'Lara'},
+  {cat:'Neukunden',  tag:'nk', label:'LITE-Paket (Einmalig)',                price:79,   qty:10, who:'Johanna'},
+  {cat:'Neukunden',  tag:'nk', label:'Basic Pro — Jahresabo',                price:299,  qty:12, who:'Johanna + Nanji'},
+  {cat:'Neukunden',  tag:'nk', label:'Basic Flex — 3 Monate',                price:97,   qty:8,  who:'Johanna'},
+  {cat:'Neukunden',  tag:'nk', label:'Premium Plus — Jahresabo',             price:549,  qty:4,  who:'Johanna + Nanji'},
+  {cat:'Bestandskunden', tag:'bk', label:'Upgrade: LITE → Basic Pro',        price:220,  qty:8,  who:'Nanji'},
+  {cat:'Bestandskunden', tag:'bk', label:'Upgrade: Basic Pro → Premium Plus',price:250,  qty:6,  who:'Nanji'},
+  {cat:'Extras', tag:'ex', label:'PremiumPerle Deluxe — 1 Monat',           price:99,   qty:4,  who:'Nanji'},
+  {cat:'Extras', tag:'ex', label:'PremiumPerle Deluxe — 3 Monate',          price:249,  qty:3,  who:'Nanji'},
+  {cat:'Extras', tag:'ex', label:'PremiumPerle Deluxe — 12 Monate',         price:449,  qty:1,  who:'Nanji'},
+  {cat:'Extras', tag:'ex', label:'Blogartikel Redaktion',                   price:249,  qty:3,  who:'Nanji'},
+];
+
+const CAT_COLOR = {
+  'Newsletter':    ['var(--teal)',   'var(--teal-light)'],
+  'Neukunden':     ['var(--blue)',   'var(--blue-light)'],
+  'Bestandskunden':['var(--gold)',   'var(--gold-light)'],
+  'Extras':        ['var(--purple)', 'var(--purple-light)'],
+};
+
+const MONTHS = [
+  {name:'Juni', target:'~2.500 €', weeks:[
+    {label:'KW 24 (9.–13. Juni)', tasks:[
+      {tag:'nl', who:'Lara',    main:'Newsletter-Ausgabe vorbereiten', sub:'3 Werbeplätze einplanen. Kandidaten-Liste anlegen: Caterer, Fotografen, Eventausstatter in Bremen.'},
+      {tag:'nk', who:'Johanna', main:'Registrierte ohne Inserat exportieren', sub:'Ziel: 60+ Kontakte. In 3 Gruppen: A = nie kontaktiert, B = schon mal kontaktiert, C = Kalt-Leads.'},
+      {tag:'bk', who:'Nanji',   main:'Bestandskunden segmentieren', sub:'Liste 1: alle LITE-Kunden. Liste 2: Basic Pro ohne PremiumPerle. Liste 3: Basic Pro → Premium Plus Kandidaten.'},
+      {tag:'ex', who:'Nanji',   main:'Gesprächsleitfaden PremiumPerle vorbereiten', sub:'Nutzenargumente für alle drei Laufzeiten schriftlich festhalten. Für Telefonate und Mails nutzen.'},
+    ]},
+    {label:'KW 25 (16.–20. Juni)', tasks:[
+      {tag:'bk', who:'Nanji',   main:'LITE-Kunden anschreiben → Basic Pro', sub:'Ziel: 4 Upgrades × 220 € = 880 €. Mail: "Warum Ihr Inserat noch zu wenig Anfragen bekommt."'},
+      {tag:'ex', who:'Nanji',   main:'Basic Pro ohne PremiumPerle anschreiben', sub:'Ziel: 4 × PremiumPerle 1 Monat × 99 € = 396 €. Persönliche Mails — kein Massenversand.'},
+      {tag:'nk', who:'Johanna', main:'30 Registrierte anschreiben (Gruppe A)', sub:'Mail: "Ihr Raum auf RAUMPERLE – bereit für den nächsten Schritt?" Ziel: 2–3 Abschlüsse.'},
+      {tag:'nl', who:'Lara',    main:'Werbeplatz-Akquise: 15 Kandidaten anschreiben', sub:'Ziel: 2 Buchungen × 150 € = 300 €. Direkter Pitch (Version A der E-Mail-Vorlagen).'},
+    ]},
+    {label:'KW 26 (23.–27. Juni)', tasks:[
+      {tag:'nk', who:'Johanna', main:'Nachfassen Gruppe A + 30 neue Kontakte (Gruppe B)', sub:'Follow-up nach 5 Tagen. Gleichzeitig frühere Kontakte anschreiben.'},
+      {tag:'bk', who:'Nanji',   main:'Basic Pro → Premium Plus: Liste 3 anschreiben', sub:'Ziel: 3 Upgrades × 250 € = 750 €. Differenz (250 €) und Nutzen klar nennen.'},
+      {tag:'ex', who:'Nanji',   main:'Blogartikel an 3 Locations pitchen', sub:'Ziel: 2 Abschlüsse × 249 € = 498 €. Locations mit guten Fotos und besonderen Räumen priorisieren.'},
+    ]},
+    {label:'KW 27 (30. Juni)', tasks:[
+      {tag:'nl', who:'Lara',    main:'Newsletter versenden', sub:'2 Werbeplätze à 150 €. Werbetreibende vorab finalisieren und Inhalte abstimmen.'},
+      {tag:'nk', who:'Alle',    main:'Juni-Auswertung (30 Min.)', sub:'Abschlüsse zählen, Conversion vergleichen, Ziel ~2.500 € prüfen. Welche Mail-Version hat besser funktioniert?'},
+    ]},
+  ]},
+  {name:'Juli', target:'~5.500 €', weeks:[
+    {label:'KW 28 (7.–11. Juli)', tasks:[
+      {tag:'nk', who:'Johanna', main:'80 neue Kontakte anschreiben', sub:'Mix: Registrierte + Kalt-Akquise (Google Maps, Vereinsräume, Kirchengemeinden). Ziel: 6 Abschlüsse × Ø 350 €.'},
+      {tag:'bk', who:'Nanji',   main:'Alle offenen Juni-Leads nachfassen', sub:'Kurze persönliche Nachricht — kein Copy-Paste. Wer hat zweimal keine Antwort gegeben → abschließen.'},
+      {tag:'ex', who:'Nanji',   main:'PremiumPerle 3 Monate pitchen', sub:'An Kunden die bereits 1-Monats-PremiumPerle haben: Upgrade auf 3 Monate (249 €). Ziel: 3 Abschlüsse.'},
+    ]},
+    {label:'KW 29 (14.–18. Juli)', tasks:[
+      {tag:'nk', who:'Johanna', main:'Nachfassen KW 28 + 40 neue Kontakte', sub:'Premium Plus als erstes nennen — nicht Basic Pro. Ø-Paketpreis steigt dadurch deutlich.'},
+      {tag:'bk', who:'Nanji',   main:'Restliche LITE-Upgrades abschließen', sub:'Wer noch nicht reagiert hat: letzter Push mit konkretem Nutzen-Argument.'},
+      {tag:'ex', who:'Nanji',   main:'3. Blogartikel abschließen', sub:'Argument: "Vor dem Herbst fertig werden — Herbst ist Hochsaison für Eventanfragen."'},
+    ]},
+    {label:'KW 30 (21.–25. Juli)', tasks:[
+      {tag:'nk', who:'Johanna', main:'40 weitere Kontakte + Telefonakquise starten', sub:'Wer auf Mails nicht reagiert: kurzer Anruf. Abschlussrate am Telefon deutlich höher.'},
+      {tag:'bk', who:'Nanji',   main:'Offene Premium Plus Upgrades nochmal anfragen', sub:'Mit konkretem Rechenbeispiel: "2 Buchungen mehr im Monat und das Upgrade bezahlt sich selbst."'},
+    ]},
+    {label:'KW 31 (28. Juli)', tasks:[
+      {tag:'nk', who:'Alle',    main:'Juli-Auswertung (30 Min.)', sub:'Kumuliertes Ziel: ~5.500 €. Lücke konkret benennen. Welcher Hebel liegt zurück? Ressourcen für August anpassen.'},
+    ]},
+  ]},
+  {name:'August', target:'~10.500 €', weeks:[
+    {label:'KW 32 (4.–8. Aug.)', tasks:[
+      {tag:'nk', who:'Johanna', main:'80 Kontakte — Fokus auf Mehrraum-Locations', sub:'Locations mit 3+ Räumen gezielt suchen → höherer Paketpreis wahrscheinlicher.'},
+      {tag:'bk', who:'Nanji',   main:'Sonderaktion: Upgrade bis 31. Aug. = anteilig ab Sep.', sub:'"Steig jetzt um und zahle erst ab September." Schriftlich klar kommunizieren.'},
+      {tag:'ex', who:'Nanji',   main:'PremiumPerle Select an 4 weitere Kunden', sub:'Basic Pro Kunden ohne PremiumPerle: 4 × 99 € = 396 €. Schnelle Abschlüsse.'},
+    ]},
+    {label:'KW 33 (11.–15. Aug.)', tasks:[
+      {tag:'nk', who:'Johanna', main:'Nachfassen aller offenen Leads', sub:'Automatische Erinnerung: wer vor 3+ Wochen angeschrieben wurde ohne Antwort → letzter Kontaktversuch.'},
+      {tag:'bk', who:'Nanji',   main:'Top 5 Upgrade-Kandidaten persönlich anrufen', sub:'Telefonat statt Mail — Abschlussquote deutlich höher. Ziel: 2 weitere Premium Plus Upgrades.'},
+    ]},
+    {label:'KW 34–35 (18.–29. Aug.)', tasks:[
+      {tag:'nk', who:'Johanna', main:'Letzte Neukunden-Runde: 40 Kontakte', sub:'Basic Flex als Türöffner ("Teste uns einen Monat für 32 €"). Schnellerer Abschluss als Jahresabo.'},
+      {tag:'nk', who:'Alle',    main:'Zwischenstand Ziel-Check', sub:'Wenn unter 10.000 € kumuliert: alle offenen Angebote nochmal persönlich kontaktieren. Notfallhebel aktivieren.'},
+    ]},
+  ]},
+  {name:'September', target:'13.000 €', weeks:[
+    {label:'KW 36 (1.–5. Sep.)', tasks:[
+      {tag:'nk', who:'Alle',    main:'Exakten Fehlbetrag ermitteln und verteilen', sub:'Was fehlt konkret? Auf Stückzahlen herunterbrechen: X Upgrades, Y Neukunden, Z Extras.'},
+      {tag:'nk', who:'Johanna', main:'Letzte Akquise-Welle: 40 Kontakte', sub:'Steuerargument: "Jetzt starten — Kosten noch für 2026 geltend machen." Zieht zum Jahresende gut.'},
+    ]},
+    {label:'KW 37–38 (8.–19. Sep.)', tasks:[
+      {tag:'bk', who:'Nanji',   main:'Alle offenen Upgrade-Gespräche persönlich führen', sub:'Anrufen statt mailen. Letzter Push vor Saisonende.'},
+      {tag:'ex', who:'Nanji',   main:'Verbleibende PremiumPerlen verkaufen', sub:'"Herbst ist Hochsaison für Eventanfragen — jetzt ganz oben sichtbar sein."'},
+    ]},
+    {label:'KW 39 (22. Sep.)', tasks:[
+      {tag:'nk', who:'Alle',    main:'Finale Auswertung', sub:'13.000 € erreicht? Was hat funktioniert? Was wird für Q4 mitgenommen? Learnings dokumentieren.'},
+    ]},
+  ]},
+];
+
+// ── State ─────────────────────────────────────────────────────────────
+function loadState() {
+  try { return JSON.parse(localStorage.getItem('rp_state') || '{}'); } catch(e) { return {}; }
+}
+function saveState(s) {
+  try { localStorage.setItem('rp_state', JSON.stringify(s)); } catch(e) {}
+}
+
+let state = loadState();
+// Init quantities
+if (!state.qty) {
+  state.qty = PRODUCTS.map(p => p.qty);
+}
+// Init task checks: flat array indexed by [monthIdx][weekIdx][taskIdx]
+if (!state.checks) {
+  state.checks = MONTHS.map(m => m.weeks.map(w => w.tasks.map(() => false)));
+}
+
+let activeMonth = state.activeMonth || 0;
+
+// ── Calculations ──────────────────────────────────────────────────────
+function calcTotals() {
+  const bycat = {};
+  let grand = 0;
+  PRODUCTS.forEach((p,i) => {
+    const v = p.price * state.qty[i];
+    bycat[p.cat] = (bycat[p.cat]||0) + v;
+    grand += v;
+  });
+  return { bycat, grand };
+}
+
+function calcTaskProgress() {
+  let done = 0, total = 0;
+  MONTHS.forEach((m,mi) => m.weeks.forEach((w,wi) => w.tasks.forEach((t,ti) => {
+    total++;
+    if (state.checks[mi]?.[wi]?.[ti]) done++;
+  })));
+  return { done, total };
+}
+
+// ── Render ────────────────────────────────────────────────────────────
+function fmt(n) { return Math.round(n).toLocaleString('de-DE') + '\u00a0€'; }
+
+function renderAll() {
+  renderMetrics();
+  renderHebelCards();
+  renderTable();
+  renderTabs();
+  renderTasks();
+}
+
+function renderMetrics() {
+  const { grand } = calcTotals();
+  const diff = grand - 13000;
+  const { done, total } = calcTaskProgress();
+
+  const el = document.getElementById('mv-total');
+  el.textContent = fmt(grand);
+  el.className = 'metric-val ' + (grand >= 13000 ? 'ok' : 'warn');
+
+  const de = document.getElementById('mv-diff');
+  de.textContent = (diff >= 0 ? '+' : '') + fmt(diff);
+  de.className = 'metric-val ' + (diff >= 0 ? 'ok' : 'warn');
+
+  document.getElementById('mv-tasks').textContent = done + ' / ' + total;
+
+  const badge = document.getElementById('header-badge');
+  if (grand >= 13000) {
+    badge.textContent = '✓ Ziel erreicht — ' + fmt(grand);
+    badge.className = 'header-badge ok';
+  } else {
+    badge.textContent = fmt(13000 - grand) + ' fehlen noch';
+    badge.className = 'header-badge warn';
+  }
+}
+
+function renderHebelCards() {
+  const { bycat, grand } = calcTotals();
+  const cats = ['Newsletter','Neukunden','Bestandskunden','Extras'];
+  const cls  = ['nl','nk','bk','ex'];
+  const who  = ['Lara','Johanna + Nanji','Nanji','Nanji'];
+
+  let html = '';
+  cats.forEach((cat,i) => {
+    const val = bycat[cat] || 0;
+    const pct = Math.min(Math.round(val / 13000 * 100), 100);
+    html += `<div class="hebel-card ${cls[i]}">
+      <div class="hcard-label">${cat}</div>
+      <div class="hcard-val">${fmt(val)}</div>
+      <div class="hcard-bar-bg"><div class="hcard-bar-fill" style="width:${pct}%"></div></div>
+      <div class="hcard-rows">
+        <div class="hcard-row"><span>Anteil am Ziel</span><strong>${pct}%</strong></div>
+        <div class="hcard-row"><span>Ziel erreicht?</span><strong>${val>=13000*0.9?'✓ Ja':'Ausstehend'}</strong></div>
+      </div>
+      <div class="hcard-who">Zuständig: ${who[i]}</div>
+    </div>`;
+  });
+  document.getElementById('hebel-grid').innerHTML = html;
+}
+
+function renderTable() {
+  let prevCat = null;
+  let catTotal = 0;
+  let catName = '';
+  let rows = '';
+  const { grand } = calcTotals();
+
+  const flush = () => {
+    if (prevCat) {
+      rows += `<tr class="sub-total">
+        <td></td><td style="color:var(--ink-mid)">Summe ${catName}</td>
+        <td></td><td></td><td>${fmt(catTotal)}</td><td>${Math.round(catTotal/130)}%</td>
+      </tr>`;
+      catTotal = 0;
+    }
+  };
+
+  PRODUCTS.forEach((p,i) => {
+    if (p.cat !== prevCat) { flush(); prevCat = p.cat; catName = p.cat; }
+    const v = p.price * state.qty[i];
+    catTotal += v;
+    const firstInCat = i === 0 || PRODUCTS[i-1].cat !== p.cat;
+    rows += `<tr>
+      <td>${firstInCat ? `<span class="tag tag-${p.tag}">${p.cat}</span>` : ''}</td>
+      <td style="color:var(--ink)">${p.label}</td>
+      <td>${fmt(p.price)}</td>
+      <td><input class="qty-input" type="number" min="0" max="999" value="${state.qty[i]}" data-idx="${i}" oninput="updateQty(${i},this.value)"></td>
+      <td>${fmt(v)}</td>
+      <td style="color:var(--ink-light)">${Math.round(v/130)}%</td>
+    </tr>`;
+  });
+  flush();
+
+  rows += `<tr class="grand-total">
+    <td colspan="2">Gesamt</td>
+    <td></td><td></td>
+    <td>${fmt(grand)}</td>
+    <td>${grand >= 13000 ? '✓ Ziel erreicht' : '⚠ ' + fmt(13000-grand) + ' fehlen'}</td>
+  </tr>`;
+
+  document.getElementById('ptable').innerHTML = `
+    <thead><tr>
+      <th style="width:110px">Kategorie</th>
+      <th>Produkt</th>
+      <th style="width:90px">Preis</th>
+      <th style="width:80px">Stück</th>
+      <th style="width:100px">Umsatz</th>
+      <th style="width:60px">Anteil</th>
+    </tr></thead>
+    <tbody>${rows}</tbody>`;
+}
+
+function renderTabs() {
+  document.getElementById('tabs').innerHTML = MONTHS.map((m,i) =>
+    `<button class="tab ${i===activeMonth?'active':''}" onclick="switchMonth(${i})">${m.name}</button>`
+  ).join('');
+}
+
+function renderTasks() {
+  const m = MONTHS[activeMonth];
+  let html = `<div class="month-banner">
+    <div>
+      <div class="month-goal-label">Kumuliertes Monatsziel</div>
+      <div class="month-goal-text">${m.name} — alle Hebel zusammen</div>
+    </div>
+    <div class="month-target">${m.target}</div>
+  </div>`;
+
+  m.weeks.forEach((w,wi) => {
+    html += `<div class="week-block">
+      <div class="week-title"><span>${w.label}</span></div>
+      <table class="wtable"><tbody>`;
+    w.tasks.forEach((t,ti) => {
+      const done = state.checks[activeMonth]?.[wi]?.[ti];
+      html += `<tr class="${done?'done':''}" onclick="toggleTask(${activeMonth},${wi},${ti})">
+        <td class="check-cell"><div class="check-btn ${done?'checked':''}">${done?'✓':''}</div></td>
+        <td style="width:28px"><span class="who-badge">${t.who.substring(0,2)}</span></td>
+        <td style="width:80px"><span class="tag tag-${t.tag}">${t.tag==='nl'?'Newsletter':t.tag==='nk'?'Neukunden':t.tag==='bk'?'Bestands':' Extras'}</span></td>
+        <td><div class="task-main">${t.main}</div><div class="task-sub">${t.sub}</div></td>
+      </tr>`;
+    });
+    html += `</tbody></table></div>`;
+  });
+
+  document.getElementById('task-area').innerHTML = html;
+}
+
+// ── Interactions ──────────────────────────────────────────────────────
+function updateQty(idx, val) {
+  state.qty[idx] = Math.max(0, parseInt(val) || 0);
+  saveState(state);
+  renderMetrics();
+  renderHebelCards();
+  renderTable();
+}
+
+function toggleTask(mi, wi, ti) {
+  if (!state.checks[mi]) state.checks[mi] = [];
+  if (!state.checks[mi][wi]) state.checks[mi][wi] = [];
+  state.checks[mi][wi][ti] = !state.checks[mi][wi][ti];
+  saveState(state);
+  renderMetrics();
+  renderTasks();
+}
+
+function switchMonth(idx) {
+  activeMonth = idx;
+  state.activeMonth = idx;
+  saveState(state);
+  renderTabs();
+  renderTasks();
+}
+
+// ── Init ──────────────────────────────────────────────────────────────
+renderAll();
+</script>
+</body>
+</html>
