@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RAUMPERLE — Umsatz Tracker 2026</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap');
+:root{
+  --teal:#1D9E75;--teal-d:#11785A;--teal-l:#E8F7F1;
+  --blue:#2563EB;--blue-l:#EEF3FD;
+  --amber:#B45309;--amber-l:#FEF3DC;
+  --purple:#7C3AED;--purple-l:#F3EFFE;
+  --green:#16A34A;--red:#DC2626;
+  --ink:#18181B;--ink-2:#52525B;--ink-3:#A1A1AA;
+  --border:#E4E4E7;--bg:#FAFAFA;--white:#FFFFFF;--r:8px;--r-sm:5px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--ink);font-size:14px;line-height:1.5}
+
+.hdr{background:var(--white);border-bottom:1px solid var(--border);padding:12px 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50}
+.hdr-brand{font-size:16px;font-weight:700;color:var(--teal)}
+.hdr-sub{font-size:12px;color:var(--ink-3);margin-top:1px}
+.hdr-pill{font-family:'DM Mono',monospace;font-size:12px;padding:4px 14px;border-radius:20px;border:1.5px solid var(--border);color:var(--ink-2)}
+.hdr-pill.ok{background:var(--teal-l);border-color:var(--teal);color:var(--teal-d)}
+.hdr-pill.warn{background:var(--amber-l);border-color:#D97706;color:var(--amber)}
+
+.wrap{max-width:960px;margin:0 auto;padding:24px 20px 80px}
+.sl{font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);margin:28px 0 10px}
+.sl:first-child{margin-top:0}
+
+.mstrip{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+@media(max-width:640px){.mstrip{grid-template-columns:repeat(2,1fr)}}
+.mc{background:var(--white);border:1px solid var(--border);border-radius:var(--r);padding:12px 14px}
+.mc-l{font-size:11px;color:var(--ink-3);margin-bottom:3px}
+.mc-v{font-family:'DM Mono',monospace;font-size:20px;font-weight:500;color:var(--ink)}
+.mc-v.ok{color:var(--green)}.mc-v.warn{color:var(--red)}
+
+/* Progress ring */
+.ring-wrap{display:flex;align-items:center;gap:16px;background:var(--white);border:1px solid var(--border);border-radius:var(--r);padding:16px 20px;margin-top:10px}
+svg.ring{transform:rotate(-90deg)}
+.ring-bg{fill:none;stroke:var(--border);stroke-width:6}
+.ring-fill{fill:none;stroke-width:6;stroke-linecap:round;transition:stroke-dashoffset .6s cubic-bezier(.4,0,.2,1)}
+.ring-label{font-family:'DM Mono',monospace;font-size:22px;font-weight:600}
+.ring-sub{font-size:12px;color:var(--ink-3);margin-top:2px}
+
+.hgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+@media(max-width:800px){.hgrid{grid-template-columns:repeat(2,1fr)}}
+.hc{background:var(--white);border:1px solid var(--border);border-radius:var(--r);padding:14px;position:relative;overflow:hidden}
+.hc::after{content:'';position:absolute;top:0;left:0;right:0;height:3px}
+.hc.nl::after{background:var(--teal)}.hc.nk::after{background:var(--blue)}
+.hc.bk::after{background:var(--amber)}.hc.ex::after{background:var(--purple)}
+.hc-label{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--ink-3);margin-bottom:4px}
+.hc-val{font-family:'DM Mono',monospace;font-size:20px;font-weight:600;margin-bottom:8px}
+.nl .hc-val{color:var(--teal)}.nk .hc-val{color:var(--blue)}
+.bk .hc-val{color:var(--amber)}.ex .hc-val{color:var(--purple)}
+.bar-bg{height:5px;background:var(--bg);border-radius:3px;overflow:hidden;border:1px solid var(--border);margin-bottom:6px}
+.bar-fill{height:100%;border-radius:3px;transition:width .4s}
+.nl .bar-fill{background:var(--teal)}.nk .bar-fill{background:var(--blue)}
+.bk .bar-fill{background:var(--amber)}.ex .bar-fill{background:var(--purple)}
+.hc-sub{font-size:11px;color:var(--ink-3)}
+
+.tw{background:var(--white);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;margin-top:10px}
+table.pt{width:100%;border-collapse:collapse;font-size:13px}
+table.pt th{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--ink-3);padding:9px 14px;text-align:left;border-bottom:1px solid var(--border);background:var(--bg)}
+table.pt th.r{text-align:right}
+table.pt td{padding:9px 14px;border-bottom:1px solid var(--border);vertical-align:middle}
+table.pt tr:last-child td{border-bottom:none}
+table.pt tr.grp-head td{background:var(--bg);font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--ink-3);padding:6px 14px}
+table.pt tr.grand td{background:var(--ink);color:var(--white);font-weight:600;font-family:'DM Mono',monospace}
+table.pt tr:not(.grp-head):not(.grand):hover td{background:#F4F4F5}
+.r{text-align:right}.mono{font-family:'DM Mono',monospace;font-size:12px}
+
+.qty-row{display:flex;align-items:center;gap:8px;justify-content:flex-end}
+.qty-btn{width:24px;height:24px;border-radius:50%;border:1px solid var(--border);background:var(--white);color:var(--ink-2);font-size:16px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .1s;flex-shrink:0}
+.qty-btn:hover{border-color:var(--teal);color:var(--teal)}
+input.qi{width:44px;font-family:'DM Mono',monospace;font-size:13px;text-align:center;padding:3px 4px;border:1px solid var(--border);border-radius:var(--r-sm);background:var(--bg);color:var(--ink)}
+input.qi:focus{outline:none;border-color:var(--teal);background:var(--white)}
+
+.tag{display:inline-block;font-size:10px;font-weight:600;padding:2px 7px;border-radius:20px;white-space:nowrap}
+.t-nl{background:var(--teal-l);color:var(--teal-d)}
+.t-nk{background:var(--blue-l);color:var(--blue)}
+.t-bk{background:var(--amber-l);color:var(--amber)}
+.t-ex{background:var(--purple-l);color:var(--purple)}
+
+.save-bar{position:fixed;bottom:20px;right:20px;background:var(--ink);color:var(--white);font-size:13px;padding:10px 18px;border-radius:var(--r);display:none;align-items:center;gap:10px;box-shadow:0 4px 20px rgba(0,0,0,.25);z-index:99}
+.save-bar.show{display:flex}
+.save-bar button{background:var(--teal);color:var(--white);border:none;padding:5px 12px;border-radius:var(--r-sm);font-size:12px;font-weight:600;cursor:pointer}
+.reset-btn{font-size:12px;color:var(--ink-3);background:none;border:1px solid var(--border);border-radius:var(--r-sm);padding:4px 12px;cursor:pointer;margin-top:10px}
+.reset-btn:hover{color:var(--red);border-color:var(--red)}
+</style>
+</head>
+<body>
+
+<header class="hdr">
+  <div>
+    <div class="hdr-brand">RAUMPERLE</div>
+    <div class="hdr-sub">Umsatz-Tracker — Ziel: 13.000 € bis September 2026</div>
+  </div>
+  <div class="hdr-pill" id="hpill">Lädt…</div>
+</header>
+
+<main class="wrap">
+
+  <div class="sl">Gesamtfortschritt</div>
+  <div class="mstrip">
+    <div class="mc"><div class="mc-l">Ziel</div><div class="mc-v">13.000 €</div></div>
+    <div class="mc"><div class="mc-l">Bereits verkauft</div><div class="mc-v ok" id="mv-sold">0 €</div></div>
+    <div class="mc"><div class="mc-l">Noch zu erreichen</div><div class="mc-v" id="mv-left">13.000 €</div></div>
+    <div class="mc"><div class="mc-l">Zielerreichung</div><div class="mc-v" id="mv-pct">0%</div></div>
+  </div>
+
+  <div class="ring-wrap">
+    <svg class="ring" width="72" height="72" viewBox="0 0 72 72">
+      <circle class="ring-bg" cx="36" cy="36" r="30"/>
+      <circle class="ring-fill" id="ring-fill" cx="36" cy="36" r="30"
+        stroke="var(--teal)" stroke-dasharray="188.5" stroke-dashoffset="188.5"/>
+    </svg>
+    <div>
+      <div class="ring-label" id="ring-label">0 €</div>
+      <div class="ring-sub">von 13.000 € Ziel erreicht</div>
+    </div>
+  </div>
+
+  <div class="sl" style="margin-top:24px">Fortschritt je Kategorie</div>
+  <div class="hgrid" id="hgrid"></div>
+
+  <div class="sl" style="margin-top:24px">Verkäufe eintragen</div>
+  <p style="font-size:12px;color:var(--ink-3);margin-bottom:10px">Trage ein wie viele Produkte ihr verkauft habt. + und − zum Anpassen, oder direkt die Zahl eintippen. Auf <strong style="color:var(--ink-2)">Speichern</strong> drücken damit nichts verloren geht.</p>
+  <div class="tw">
+    <table class="pt" id="ptable"></table>
+  </div>
+  <button class="reset-btn" onclick="confirmReset()">↺ Alle Zahlen zurücksetzen</button>
+
+</main>
+
+<div class="save-bar" id="savebar">
+  Nicht gespeichert
+  <button onclick="persist()">Speichern ✓</button>
+</div>
+
+<script>
+const ZIEL = 13000;
+
+const P = [
+  // Newsletter
+  {cat:'nl', label:'Werbeplatz Groß',         price:180},
+  {cat:'nl', label:'Werbeplatz Klein',         price:150},
+  {cat:'nl', label:'Werbeblock',               price:99},
+  // Neukunden
+  {cat:'nk', label:'LITE-Paket (einmalig)',    price:79},
+  {cat:'nk', label:'Zusatzraum Basic',         price:79},
+  {cat:'nk', label:'Basic Pro — Jahresabo',    price:299},
+  {cat:'nk', label:'Basic Flex — Monatsabo',   price:32},
+  {cat:'nk', label:'Zusatzraum Premium Plus',  price:99},
+  {cat:'nk', label:'Premium Plus — Jahresabo', price:549},
+  {cat:'nk', label:'Landingpage',              price:199},
+  // Bestandskunden
+  {cat:'bk', label:'Upgrade: LITE → Basic Pro',         price:220},
+  {cat:'bk', label:'Upgrade: Basic Pro → Premium Plus', price:250},
+  // Extras
+  {cat:'ex', label:'PremiumPerle Deluxe — 1 Monat',  price:99},
+  {cat:'ex', label:'PremiumPerle Deluxe — 3 Monate', price:249},
+  {cat:'ex', label:'PremiumPerle Deluxe — 12 Monate',price:449},
+  {cat:'ex', label:'Blogartikel Redaktion',           price:249},
+];
+
+const CAT = {
+  nl:{name:'Newsletter',     col:'var(--teal)'},
+  nk:{name:'Neukunden',      col:'var(--blue)'},
+  bk:{name:'Bestandskunden', col:'var(--amber)'},
+  ex:{name:'Extras',         col:'var(--purple)'},
+};
+
+// ── STATE ─────────────────────────────────────────────────────────────
+function enc(s){return btoa(unescape(encodeURIComponent(JSON.stringify(s))))}
+function dec(s){try{return JSON.parse(decodeURIComponent(escape(atob(s))))}catch(e){return null}}
+
+function load(){
+  const h=window.location.hash.slice(1);
+  if(h){const d=dec(h);if(d)return d;}
+  try{const r=JSON.parse(localStorage.getItem('rp3')||'null');if(r)return r;}catch(e){}
+  return null;
+}
+
+let S = load() || {sold: P.map(()=>0)};
+while(S.sold.length < P.length) S.sold.push(0);
+
+let dirty = false;
+
+function persist(){
+  const e=enc(S);
+  history.replaceState(null,'','#'+e);
+  try{localStorage.setItem('rp3',JSON.stringify(S));}catch(e){}
+  dirty=false;
+  document.getElementById('savebar').classList.remove('show');
+}
+
+function markDirty(){
+  dirty=true;
+  document.getElementById('savebar').classList.add('show');
+}
+
+function confirmReset(){
+  if(confirm('Alle Verkaufszahlen auf 0 zurücksetzen?')){
+    S.sold=P.map(()=>0);
+    persist();renderAll();
+  }
+}
+
+// ── CALC ──────────────────────────────────────────────────────────────
+const fmt = n => Math.round(n).toLocaleString('de-DE')+'\u00a0€';
+
+function totalSold(){return P.reduce((a,p,i)=>a+p.price*S.sold[i],0)}
+
+function catSold(){
+  const r={nl:0,nk:0,bk:0,ex:0};
+  P.forEach((p,i)=>r[p.cat]+=p.price*S.sold[i]);
+  return r;
+}
+
+// ── RENDER ────────────────────────────────────────────────────────────
+function renderAll(){
+  const sold=totalSold();
+  const pct=Math.min(Math.round(sold/ZIEL*100),100);
+  const left=Math.max(0,ZIEL-sold);
+
+  // Header pill
+  const pill=document.getElementById('hpill');
+  if(sold>=ZIEL){pill.textContent='✓ Ziel erreicht!';pill.className='hdr-pill ok';}
+  else{pill.textContent=fmt(left)+' fehlen noch';pill.className='hdr-pill warn';}
+
+  // Metrics
+  document.getElementById('mv-sold').textContent=fmt(sold);
+  document.getElementById('mv-sold').className='mc-v '+(sold>0?'ok':'');
+  document.getElementById('mv-left').textContent=fmt(left);
+  document.getElementById('mv-left').className='mc-v '+(left===0?'ok':'warn');
+  document.getElementById('mv-pct').textContent=pct+'%';
+  document.getElementById('mv-pct').className='mc-v '+(pct>=100?'ok':pct>=50?'':'warn');
+
+  // Ring
+  const circ=188.5;
+  const offset=circ-(circ*pct/100);
+  document.getElementById('ring-fill').style.strokeDashoffset=offset;
+  document.getElementById('ring-fill').style.stroke=sold>=ZIEL?'var(--green)':'var(--teal)';
+  document.getElementById('ring-label').textContent=fmt(sold);
+
+  // Hebel cards
+  const cs=catSold();
+  document.getElementById('hgrid').innerHTML=Object.entries(CAT).map(([k,c])=>{
+    const v=cs[k];
+    const pct2=Math.min(Math.round(v/ZIEL*100),100);
+    return `<div class="hc ${k}">
+      <div class="hc-label">${c.name}</div>
+      <div class="hc-val">${fmt(v)}</div>
+      <div class="bar-bg"><div class="bar-fill" style="width:${pct2}%"></div></div>
+      <div class="hc-sub">${pct2}% des Gesamtziels</div>
+    </div>`;
+  }).join('');
+
+  // Table
+  let rows='', prevCat=null, catSum=0;
+  const flush=cat=>{
+    if(!cat)return;
+    rows+=`<tr><td colspan="3" style="text-align:right;font-size:12px;color:var(--ink-3);padding:6px 14px;border-bottom:1px solid var(--border)">
+      Summe ${CAT[cat].name}: <strong style="color:var(--ink-2);font-family:'DM Mono',monospace">${fmt(catSum)}</strong>
+    </td></tr>`;
+    catSum=0;
+  };
+
+  P.forEach((p,i)=>{
+    if(p.cat!==prevCat){
+      flush(prevCat);
+      prevCat=p.cat;
+      rows+=`<tr class="grp-head"><td colspan="3"><span class="tag t-${p.cat}">${CAT[p.cat].name}</span></td></tr>`;
+    }
+    const v=p.price*S.sold[i];
+    catSum+=v;
+    rows+=`<tr>
+      <td>${p.label}</td>
+      <td class="r mono" style="color:var(--ink-3)">${fmt(p.price)}</td>
+      <td class="r" style="min-width:160px">
+        <div class="qty-row">
+          <button class="qty-btn" onclick="adj(${i},-1)">−</button>
+          <input class="qi" type="number" min="0" value="${S.sold[i]}" oninput="set(${i},this.value)">
+          <button class="qty-btn" onclick="adj(${i},1)">+</button>
+          <span style="font-family:'DM Mono',monospace;font-size:12px;color:${v>0?'var(--green)':'var(--ink-3)'};min-width:70px;text-align:right">${fmt(v)}</span>
+        </div>
+      </td>
+    </tr>`;
+  });
+  flush(prevCat);
+
+  rows+=`<tr class="grand">
+    <td>Gesamt verkauft</td>
+    <td></td>
+    <td class="r">${fmt(sold)} / 13.000 € Ziel &nbsp; ${sold>=ZIEL?'✓':'⚠ '+fmt(left)+' fehlen'}</td>
+  </tr>`;
+
+  document.getElementById('ptable').innerHTML=`
+    <thead><tr>
+      <th>Produkt</th>
+      <th class="r">Preis</th>
+      <th class="r">Anzahl verkauft / Einnahmen</th>
+    </tr></thead><tbody>${rows}</tbody>`;
+}
+
+function adj(i,d){
+  S.sold[i]=Math.max(0,(S.sold[i]||0)+d);
+  markDirty();renderAll();
+}
+function set(i,v){
+  S.sold[i]=Math.max(0,parseInt(v)||0);
+  markDirty();renderAll();
+}
+
+setInterval(()=>{if(dirty)persist();},30000);
+renderAll();
+</script>
+</body>
+</html>
