@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RAUMPERLE — Umsatzplan 2026</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;1,400&family=DM+Mono:wght@400;500&display=swap');
+
+:root {
+  --teal:        #1D9E75;
+  --teal-d:      #11785A;
+  --teal-l:      #E8F7F1;
+  --blue:        #2563EB;
+  --blue-l:      #EEF3FD;
+  --amber:       #B45309;
+  --amber-l:     #FEF3DC;
+  --purple:      #7C3AED;
+  --purple-l:    #F3EFFE;
+  --red:         #DC2626;
+  --green:       #16A34A;
+  --ink:         #18181B;
+  --ink-2:       #52525B;
+  --ink-3:       #A1A1AA;
+  --border:      #E4E4E7;
+  --bg:          #FAFAFA;
+  --white:       #FFFFFF;
+  --r:           8px;
+  --r-sm:        5px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--ink);font-size:14px;line-height:1.5;min-height:100vh}
+
+/* HEADER */
+.hdr{background:var(--white);border-bottom:1px solid var(--border);padding:12px 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50}
+.hdr-brand{font-size:16px;font-weight:700;color:var(--teal);letter-spacing:-.3px}
+.hdr-sub{font-size:12px;color:var(--ink-3);margin-top:1px}
+.hdr-pill{font-family:'DM Mono',monospace;font-size:12px;padding:4px 12px;border-radius:20px;border:1.5px solid var(--border);color:var(--ink-2);transition:all .2s}
+.hdr-pill.ok{background:var(--teal-l);border-color:var(--teal);color:var(--teal-d)}
+.hdr-pill.warn{background:var(--amber-l);border-color:#D97706;color:var(--amber)}
+
+/* LAYOUT */
+.wrap{max-width:1080px;margin:0 auto;padding:24px 20px 80px}
+
+/* SECTION LABEL */
+.sl{font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);margin:28px 0 10px}
+.sl:first-child{margin-top:0}
+
+/* METRIC STRIP */
+.mstrip{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:4px}
+@media(max-width:680px){.mstrip{grid-template-columns:repeat(2,1fr)}}
+.mc{background:var(--white);border:1px solid var(--border);border-radius:var(--r);padding:12px 14px}
+.mc-l{font-size:11px;color:var(--ink-3);margin-bottom:3px}
+.mc-v{font-family:'DM Mono',monospace;font-size:21px;font-weight:500}
+.mc-v.ok{color:var(--green)}.mc-v.warn{color:var(--red)}.mc-v.neu{color:var(--ink)}
+
+/* HEBEL CARDS */
+.hgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+@media(max-width:860px){.hgrid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:480px){.hgrid{grid-template-columns:1fr}}
+.hc{background:var(--white);border:1px solid var(--border);border-radius:var(--r);padding:14px;position:relative;overflow:hidden}
+.hc::after{content:'';position:absolute;top:0;left:0;right:0;height:3px}
+.hc.nl::after{background:var(--teal)}.hc.nk::after{background:var(--blue)}
+.hc.bk::after{background:var(--amber)}.hc.ex::after{background:var(--purple)}
+.hc-label{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--ink-3);margin-bottom:3px}
+.hc-val{font-family:'DM Mono',monospace;font-size:22px;font-weight:600;margin-bottom:8px}
+.nl .hc-val{color:var(--teal)}.nk .hc-val{color:var(--blue)}
+.bk .hc-val{color:var(--amber)}.ex .hc-val{color:var(--purple)}
+.hc-bar-bg{height:5px;background:var(--bg);border-radius:3px;overflow:hidden;margin-bottom:8px;border:1px solid var(--border)}
+.hc-bar-fill{height:100%;border-radius:3px;transition:width .5s cubic-bezier(.4,0,.2,1)}
+.nl .hc-bar-fill{background:var(--teal)}.nk .hc-bar-fill{background:var(--blue)}
+.bk .hc-bar-fill{background:var(--amber)}.ex .hc-bar-fill{background:var(--purple)}
+.hc-meta{font-size:11px;color:var(--ink-3);margin-top:4px}
+.hc-pct{font-size:12px;font-weight:500;color:var(--ink-2)}
+
+/* TABLE */
+.tw{background:var(--white);border:1px solid var(--border);border-radius:var(--r);overflow:hidden}
+table.pt{width:100%;border-collapse:collapse;font-size:13px}
+table.pt th{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--ink-3);padding:9px 12px;text-align:left;border-bottom:1px solid var(--border);background:var(--bg)}
+table.pt th.r{text-align:right}
+table.pt td{padding:9px 12px;border-bottom:1px solid var(--border);vertical-align:middle}
+table.pt tr:last-child td{border-bottom:none}
+table.pt tr.sub td{background:var(--bg);font-weight:500;font-size:12px;color:var(--ink-2)}
+table.pt tr.grand td{background:var(--ink);color:var(--white);font-weight:600}
+table.pt tr:not(.sub):not(.grand):hover td{background:#F4F4F5}
+.mono{font-family:'DM Mono',monospace;font-size:12px}
+.r{text-align:right}
+
+/* SOLD INPUT */
+.sold-wrap{display:flex;align-items:center;gap:6px;justify-content:flex-end}
+.sold-wrap span{font-family:'DM Mono',monospace;font-size:11px;color:var(--ink-3)}
+input.si{width:52px;font-family:'DM Mono',monospace;font-size:13px;text-align:right;padding:3px 7px;border:1px solid var(--border);border-radius:var(--r-sm);background:var(--bg);color:var(--ink);transition:border-color .15s}
+input.si:focus{outline:none;border-color:var(--teal);background:var(--white)}
+.progress-mini{width:48px;height:4px;background:var(--border);border-radius:2px;overflow:hidden}
+.progress-mini-fill{height:100%;border-radius:2px;background:var(--teal);transition:width .3s}
+.progress-mini-fill.done{background:var(--green)}
+.progress-mini-fill.over{background:var(--red)}
+
+/* TAG */
+.tag{display:inline-block;font-size:10px;font-weight:600;padding:2px 7px;border-radius:20px;white-space:nowrap}
+.t-nl{background:var(--teal-l);color:var(--teal-d)}
+.t-nk{background:var(--blue-l);color:var(--blue)}
+.t-bk{background:var(--amber-l);color:var(--amber)}
+.t-ex{background:var(--purple-l);color:var(--purple)}
+
+/* TABS */
+.tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+.tab{font-size:13px;font-weight:500;padding:5px 14px;border-radius:20px;border:1px solid var(--border);background:var(--white);color:var(--ink-2);cursor:pointer;transition:all .15s}
+.tab:hover{border-color:var(--teal);color:var(--teal)}
+.tab.active{background:var(--teal);color:var(--white);border-color:var(--teal)}
+
+/* TASK PLAN */
+.mbanner{background:var(--white);border:1px solid var(--border);border-radius:var(--r);padding:12px 16px;margin-bottom:14px;display:flex;align-items:center;justify-content:space-between}
+.mbanner-goal{font-size:13px;font-weight:500;color:var(--ink)}
+.mbanner-sub{font-size:11px;color:var(--ink-3)}
+.mbanner-val{font-family:'DM Mono',monospace;font-size:20px;font-weight:600;color:var(--teal)}
+
+.wblock{background:var(--white);border:1px solid var(--border);border-radius:var(--r);margin-bottom:10px;overflow:hidden}
+.whead{font-size:12px;font-weight:600;color:var(--ink-2);padding:8px 14px;background:var(--bg);border-bottom:1px solid var(--border)}
+table.wt{width:100%;border-collapse:collapse;font-size:13px}
+table.wt td{padding:9px 12px;border-bottom:1px solid var(--border);vertical-align:top}
+table.wt tr:last-child td{border-bottom:none}
+table.wt tr{cursor:pointer;transition:background .1s}
+table.wt tr:hover td{background:#F4F4F5}
+table.wt tr.done td{opacity:.4}
+table.wt tr.done .tm{text-decoration:line-through}
+.tm{font-weight:500;color:var(--ink);line-height:1.4}
+.ts{font-size:11px;color:var(--ink-3);margin-top:2px;line-height:1.5}
+.cb{width:18px;height:18px;border-radius:4px;border:1.5px solid var(--border);background:var(--white);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;font-size:10px;color:transparent;flex-shrink:0;transition:all .1s}
+.cb.on{background:var(--teal);border-color:var(--teal);color:var(--white)}
+.who{font-size:11px;font-weight:600;color:var(--ink-2);white-space:nowrap}
+
+/* SAVE BANNER */
+.save-bar{position:fixed;bottom:20px;right:20px;background:var(--ink);color:var(--white);font-size:13px;padding:10px 18px;border-radius:var(--r);display:none;align-items:center;gap:10px;box-shadow:0 4px 20px rgba(0,0,0,.2);z-index:99}
+.save-bar.show{display:flex}
+.save-bar button{background:var(--teal);color:var(--white);border:none;padding:5px 12px;border-radius:var(--r-sm);font-size:12px;font-weight:600;cursor:pointer}
+
+/* RESET BTN */
+.reset-btn{font-size:12px;color:var(--ink-3);background:none;border:1px solid var(--border);border-radius:var(--r-sm);padding:3px 10px;cursor:pointer;margin-left:auto;display:block;margin-top:8px}
+.reset-btn:hover{color:var(--red);border-color:var(--red)}
+</style>
+</head>
+<body>
+
+<header class="hdr">
+  <div>
+    <div class="hdr-brand">RAUMPERLE</div>
+    <div class="hdr-sub">Umsatzplan bis September 2026</div>
+  </div>
+  <div class="hdr-pill" id="hpill">Lädt…</div>
+</header>
+
+<main class="wrap">
+
+  <div class="sl">Gesamtübersicht</div>
+  <div class="mstrip">
+    <div class="mc"><div class="mc-l">Ziel</div><div class="mc-v neu">13.000 €</div></div>
+    <div class="mc"><div class="mc-l">Geplant (Stück)</div><div class="mc-v" id="mv-plan">—</div></div>
+    <div class="mc"><div class="mc-l">Bereits verkauft</div><div class="mc-v ok" id="mv-sold">0 €</div></div>
+    <div class="mc"><div class="mc-l">Noch zu verkaufen</div><div class="mc-v" id="mv-left">—</div></div>
+  </div>
+
+  <div class="sl" style="margin-top:20px">Fortschritt je Hebel</div>
+  <div class="hgrid" id="hgrid"></div>
+
+  <div class="sl" style="margin-top:20px">Produkte — Ziel & Fortschritt</div>
+  <p style="font-size:12px;color:var(--ink-3);margin-bottom:10px">Trage in <strong style="color:var(--ink-2)">„Verkauft"</strong> ein wie viele ihr bereits abgeschlossen habt. Die Zahlen werden gespeichert.</p>
+  <div class="tw">
+    <table class="pt" id="ptable"></table>
+  </div>
+  <button class="reset-btn" onclick="confirmReset()">↺ Alle Verkauft-Zahlen zurücksetzen</button>
+
+  <div class="sl" style="margin-top:28px">Aufgabenplan</div>
+  <div class="tabs" id="tabs"></div>
+  <div id="tasks"></div>
+
+</main>
+
+<div class="save-bar" id="savebar">
+  Ungespeicherte Änderungen
+  <button onclick="persist()">Speichern</button>
+</div>
+
+<script>
+// ── PRODUCTS ─────────────────────────────────────────────────────────
+const P = [
+  // Newsletter
+  {cat:'nl', label:'Werbeplatz Groß (1/1)',          price:180, ziel:2},
+  {cat:'nl', label:'Werbeplatz Klein (1/2)',          price:150, ziel:3},
+  {cat:'nl', label:'Werbeblock',                      price:99,  ziel:4},
+  // Neukunden
+  {cat:'nk', label:'LITE-Paket (einmalig)',            price:79,  ziel:10},
+  {cat:'nk', label:'Basic Pro + 1 Zusatzraum',         price:378, ziel:5},  // 299+79
+  {cat:'nk', label:'Basic Pro — Jahresabo',            price:299, ziel:10},
+  {cat:'nk', label:'Basic Flex — 3 Monate',            price:97,  ziel:8},
+  {cat:'nk', label:'Premium Plus + 1 Zusatzraum',      price:648, ziel:2},  // 549+99
+  {cat:'nk', label:'Premium Plus — Jahresabo',         price:549, ziel:4},
+  {cat:'nk', label:'Landingpage',                      price:199, ziel:5},
+  // Bestandskunden
+  {cat:'bk', label:'Upgrade: LITE → Basic Pro',        price:220, ziel:8},
+  {cat:'bk', label:'Upgrade: Basic Pro → Premium Plus',price:250, ziel:6},
+  // Extras
+  {cat:'ex', label:'PremiumPerle Deluxe — 1 Monat',   price:99,  ziel:4},
+  {cat:'ex', label:'PremiumPerle Deluxe — 3 Monate',  price:249, ziel:3},
+  {cat:'ex', label:'PremiumPerle Deluxe — 12 Monate', price:449, ziel:1},
+  {cat:'ex', label:'Blogartikel Redaktion',            price:249, ziel:3},
+];
+
+const CAT = {
+  nl: {name:'Newsletter',     cls:'nl', color:'var(--teal)'},
+  nk: {name:'Neukunden',      cls:'nk', color:'var(--blue)'},
+  bk: {name:'Bestandskunden', cls:'bk', color:'var(--amber)'},
+  ex: {name:'Extras',         cls:'ex', color:'var(--purple)'},
+};
+
+// ── TASKS ─────────────────────────────────────────────────────────────
+const MONTHS = [
+  {name:'Juni', target:'~2.500 €', weeks:[
+    {label:'KW 24 (9.–13. Juni)', tasks:[
+      {cat:'nl',who:'Lara',    tm:'Newsletter-Ausgabe vorbereiten',             ts:'Werbeplätze einplanen (Groß 180€, Klein 150€, Block 99€). Kandidaten-Liste: Caterer, Fotografen, Eventausstatter.'},
+      {cat:'nk',who:'Johanna', tm:'Registrierte ohne Inserat exportieren',      ts:'Ziel: 60+ Kontakte. Gruppen: A = nie kontaktiert, B = schon kontaktiert, C = Kalt-Leads.'},
+      {cat:'bk',who:'Nanji',   tm:'Bestandskunden segmentieren',                ts:'Liste 1: LITE-Kunden. Liste 2: Basic Pro ohne PremiumPerle. Liste 3: Basic Pro → Premium Plus.'},
+      {cat:'ex',who:'Nanji',   tm:'Gesprächsleitfaden PremiumPerle vorbereiten',ts:'Nutzenargumente für 1/3/12 Monate schriftlich festhalten.'},
+    ]},
+    {label:'KW 25 (16.–20. Juni)', tasks:[
+      {cat:'bk',who:'Nanji',   tm:'LITE-Kunden anschreiben → Basic Pro',        ts:'Ziel: 4 Upgrades × 220 € = 880 €. Mail: "Warum Ihr Inserat noch zu wenig Anfragen bekommt."'},
+      {cat:'ex',who:'Nanji',   tm:'Basic Pro ohne PremiumPerle anschreiben',    ts:'Ziel: 4 × PremiumPerle 1 Monat × 99 € = 396 €. Persönliche Mails.'},
+      {cat:'nk',who:'Johanna', tm:'30 Registrierte anschreiben (Gruppe A)',     ts:'Ziel: 2–3 Abschlüsse. Bei Mehrraum-Locations direkt Premium Plus + Zusatzraum pitchen.'},
+      {cat:'nl',who:'Lara',    tm:'15 Werbeplatz-Kandidaten anschreiben',       ts:'Ziel: 1 × Groß (180 €) + 2 × Klein (150 €) = 480 €. Direkter Pitch.'},
+    ]},
+    {label:'KW 26 (23.–27. Juni)', tasks:[
+      {cat:'nk',who:'Johanna', tm:'Nachfassen Gruppe A + 30 neue (Gruppe B)',   ts:'Follow-up nach 5 Tagen. Landingpage als Zusatzleistung bei Interesse erwähnen (199 €).'},
+      {cat:'bk',who:'Nanji',   tm:'Basic Pro → Premium Plus: Liste 3',          ts:'Ziel: 3 Upgrades × 250 € = 750 €. Differenz klar nennen.'},
+      {cat:'ex',who:'Nanji',   tm:'Blogartikel an 3 Locations pitchen',         ts:'Ziel: 2 Abschlüsse × 249 € = 498 €.'},
+    ]},
+    {label:'KW 27 (30. Juni)', tasks:[
+      {cat:'nl',who:'Lara',    tm:'Newsletter versenden',                        ts:'Alle gebuchten Werbeplätze ausliefern.'},
+      {cat:'nk',who:'Alle',    tm:'Juni-Auswertung (30 Min.)',                   ts:'Ziel ~2.500 €. Welche Produkte haben am besten konvertiert? Plan für Juli anpassen.'},
+    ]},
+  ]},
+  {name:'Juli', target:'~5.500 € kumuliert', weeks:[
+    {label:'KW 28 (7.–11. Juli)', tasks:[
+      {cat:'nk',who:'Johanna', tm:'80 neue Kontakte anschreiben',               ts:'Mehrraum-Locations: direkt Premium Plus + Zusatzraum (648 €) pitchen. Einzel-Locations: Basic Pro.'},
+      {cat:'bk',who:'Nanji',   tm:'Alle offenen Juni-Leads nachfassen',         ts:'Persönliche Nachricht. Bei Interesse an Landingpage: direkt Angebot machen (199 €).'},
+      {cat:'ex',who:'Nanji',   tm:'PremiumPerle 3 Monate pitchen',              ts:'An Kunden mit 1-Monats-PremiumPerle: Upgrade auf 3 Monate (249 €). Ziel: 3 Abschlüsse.'},
+    ]},
+    {label:'KW 29 (14.–18. Juli)', tasks:[
+      {cat:'nk',who:'Johanna', tm:'Nachfassen KW 28 + 40 neue Kontakte',        ts:'Premium Plus immer als erstes nennen. Landingpage als Upsell bei Abschluss erwähnen.'},
+      {cat:'bk',who:'Nanji',   tm:'Restliche LITE-Upgrades abschließen',        ts:'Letzter Push. Zeigen wie Inserat mit Basic Pro aussieht.'},
+      {cat:'nk',who:'Nanji',   tm:'5 Landingpage-Angebote verschicken',         ts:'Ziel: 2 Abschlüsse × 199 € = 398 €. Für Locations mit schwachem Online-Auftritt.'},
+    ]},
+    {label:'KW 30 (21.–25. Juli)', tasks:[
+      {cat:'nk',who:'Johanna', tm:'40 weitere Kontakte + Telefonakquise',       ts:'Wer auf Mails nicht reagiert: kurzer Anruf. Am Telefon höhere Abschlussrate.'},
+      {cat:'bk',who:'Nanji',   tm:'Offene Premium Plus Upgrades nochmal anfragen',ts:'"2 Buchungen mehr im Monat und das Upgrade bezahlt sich selbst."'},
+    ]},
+    {label:'KW 31 (28. Juli)', tasks:[
+      {cat:'nk',who:'Alle',    tm:'Juli-Auswertung (30 Min.)',                  ts:'Kumuliertes Ziel: ~5.500 €. Lücke konkret benennen. Ressourcen für August anpassen.'},
+    ]},
+  ]},
+  {name:'August', target:'~10.500 € kumuliert', weeks:[
+    {label:'KW 32 (4.–8. Aug.)', tasks:[
+      {cat:'nk',who:'Johanna', tm:'80 Kontakte — Fokus Mehrraum-Locations',     ts:'Locations mit 3+ Räumen: Premium Plus + Zusatzräume (99 € je Raum) = deutlich höherer Wert.'},
+      {cat:'bk',who:'Nanji',   tm:'Sonderaktion: Upgrade bis 31. Aug.',         ts:'"Steig jetzt um und zahle erst ab September." Schriftlich kommunizieren.'},
+      {cat:'ex',who:'Nanji',   tm:'PremiumPerle an 4 weitere Kunden',           ts:'Basic Pro ohne PremiumPerle: 4 × 99 € = 396 €.'},
+    ]},
+    {label:'KW 33 (11.–15. Aug.)', tasks:[
+      {cat:'nk',who:'Johanna', tm:'Nachfassen aller offenen Leads',             ts:'Wer vor 3+ Wochen angeschrieben wurde ohne Antwort → letzter Versuch.'},
+      {cat:'bk',who:'Nanji',   tm:'Top 5 Upgrade-Kandidaten anrufen',           ts:'Telefonat statt Mail. Ziel: 2 weitere Premium Plus Upgrades.'},
+      {cat:'nk',who:'Nanji',   tm:'Landingpage-Push: 10 Angebote',              ts:'Ziel: 3 Abschlüsse × 199 € = 597 €. Argument: "Vor dem Herbst fertig werden."'},
+    ]},
+    {label:'KW 34–35 (18.–29. Aug.)', tasks:[
+      {cat:'nk',who:'Johanna', tm:'Letzte Neukunden-Runde: 40 Kontakte',        ts:'Basic Flex als Türöffner. Wer Jahresabo zögert: erst einen Monat testen.'},
+      {cat:'nk',who:'Alle',    tm:'Zwischenstand Ziel-Check',                   ts:'Wenn unter 10.000 €: alle offenen Angebote persönlich kontaktieren.'},
+    ]},
+  ]},
+  {name:'September', target:'13.000 € ✅', weeks:[
+    {label:'KW 36 (1.–5. Sep.)', tasks:[
+      {cat:'nk',who:'Alle',    tm:'Fehlbetrag ermitteln und verteilen',          ts:'Was fehlt konkret in Stück? X Upgrades, Y Neukunden, Z Extras.'},
+      {cat:'nk',who:'Johanna', tm:'Letzte Akquise-Welle: 40 Kontakte',          ts:'Steuerargument: "Kosten noch für 2026 geltend machen."'},
+    ]},
+    {label:'KW 37–38 (8.–19. Sep.)', tasks:[
+      {cat:'bk',who:'Nanji',   tm:'Alle offenen Upgrades persönlich führen',    ts:'Anrufen statt mailen. Letzter Push vor Saisonende.'},
+      {cat:'ex',who:'Nanji',   tm:'Verbleibende PremiumPerlen + Landingpages',  ts:'"Herbst = Hochsaison für Eventanfragen — jetzt sichtbar sein."'},
+    ]},
+    {label:'KW 39 (22. Sep.)', tasks:[
+      {cat:'nk',who:'Alle',    tm:'Finale Auswertung',                          ts:'13.000 € erreicht? Was hat funktioniert? Learnings für Q4 dokumentieren.'},
+    ]},
+  ]},
+];
+
+// ── STATE (URL hash persistence — works in Notion iframes) ────────────
+function encode(s){ return btoa(unescape(encodeURIComponent(JSON.stringify(s)))); }
+function decode(s){ try{ return JSON.parse(decodeURIComponent(escape(atob(s)))); }catch(e){ return null; } }
+
+function loadState(){
+  // Try URL hash first (works in Notion)
+  const h = window.location.hash.slice(1);
+  if(h){ const d = decode(h); if(d) return d; }
+  // Fallback localStorage
+  try{ const r = JSON.parse(localStorage.getItem('rp2')||'null'); if(r) return r; }catch(e){}
+  return null;
+}
+
+function defaultState(){
+  return {
+    sold: P.map(()=>0),
+    checks: MONTHS.map(m=>m.weeks.map(w=>w.tasks.map(()=>false))),
+    tab: 0
+  };
+}
+
+let S = loadState() || defaultState();
+// Ensure arrays match current product/task counts
+while(S.sold.length < P.length) S.sold.push(0);
+if(!S.checks) S.checks = defaultState().checks;
+MONTHS.forEach((m,mi)=>{
+  if(!S.checks[mi]) S.checks[mi]=[];
+  m.weeks.forEach((w,wi)=>{
+    if(!S.checks[mi][wi]) S.checks[mi][wi]=[];
+    w.tasks.forEach((_,ti)=>{ if(S.checks[mi][wi][ti]===undefined) S.checks[mi][wi][ti]=false; });
+  });
+});
+
+let dirty = false;
+
+function persist(){
+  const enc = encode(S);
+  // Update URL hash (shareable, works in iframes)
+  history.replaceState(null,'','#'+enc);
+  // Also localStorage
+  try{ localStorage.setItem('rp2', JSON.stringify(S)); }catch(e){}
+  dirty = false;
+  document.getElementById('savebar').classList.remove('show');
+}
+
+function markDirty(){
+  dirty = true;
+  document.getElementById('savebar').classList.add('show');
+}
+
+function confirmReset(){
+  if(confirm('Alle "Verkauft"-Zahlen auf 0 zurücksetzen?')){
+    S.sold = P.map(()=>0);
+    persist();
+    renderAll();
+  }
+}
+
+// ── CALC ──────────────────────────────────────────────────────────────
+function fmt(n){ return Math.round(n).toLocaleString('de-DE')+'\u00a0€'; }
+
+function calcCats(){
+  const plan={}, sold={};
+  ['nl','nk','bk','ex'].forEach(c=>{ plan[c]=0; sold[c]=0; });
+  P.forEach((p,i)=>{
+    plan[p.cat] += p.price * p.ziel;
+    sold[p.cat] += p.price * S.sold[i];
+  });
+  return {plan,sold};
+}
+
+function calcGrand(){
+  let plan=0, sold=0;
+  P.forEach((p,i)=>{ plan+=p.price*p.ziel; sold+=p.price*S.sold[i]; });
+  return {plan,sold};
+}
+
+function calcTasks(){
+  let done=0,total=0;
+  MONTHS.forEach((m,mi)=>m.weeks.forEach((w,wi)=>w.tasks.forEach((_,ti)=>{
+    total++; if(S.checks[mi]?.[wi]?.[ti]) done++;
+  })));
+  return {done,total};
+}
+
+// ── RENDER ────────────────────────────────────────────────────────────
+function renderAll(){ renderHeader(); renderMetrics(); renderHebel(); renderTable(); renderTabs(); renderTasks(); }
+
+function renderHeader(){
+  const {sold} = calcGrand();
+  const pill = document.getElementById('hpill');
+  const left = 13000 - sold;
+  if(sold>=13000){ pill.textContent='✓ Ziel erreicht!'; pill.className='hdr-pill ok'; }
+  else{ pill.textContent=fmt(left)+' fehlen noch'; pill.className='hdr-pill warn'; }
+}
+
+function renderMetrics(){
+  const {plan,sold} = calcGrand();
+  const left = Math.max(0, 13000-sold);
+  document.getElementById('mv-plan').textContent = fmt(plan);
+  document.getElementById('mv-plan').className = 'mc-v '+(plan>=13000?'ok':'warn');
+  document.getElementById('mv-sold').textContent = fmt(sold);
+  document.getElementById('mv-left').textContent = fmt(left);
+  document.getElementById('mv-left').className = 'mc-v '+(left===0?'ok':'neu');
+}
+
+function renderHebel(){
+  const {plan,sold} = calcCats();
+  const order = ['nl','nk','bk','ex'];
+  document.getElementById('hgrid').innerHTML = order.map(c=>{
+    const pPct = Math.min(Math.round(plan[c]/13000*100),100);
+    const sPct = Math.min(Math.round(sold[c]/plan[c]*100)||0,100);
+    return `<div class="hc ${c}">
+      <div class="hc-label">${CAT[c].name}</div>
+      <div class="hc-val">${fmt(sold[c])}</div>
+      <div style="font-size:11px;color:var(--ink-3);margin-bottom:6px">von ${fmt(plan[c])} geplant</div>
+      <div class="hc-bar-bg"><div class="hc-bar-fill" style="width:${sPct}%"></div></div>
+      <div style="display:flex;justify-content:space-between">
+        <div class="hc-pct">${sPct}% verkauft</div>
+        <div class="hc-meta">Anteil Ziel: ${pPct}%</div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function renderTable(){
+  let prevCat=null, catPlan=0, catSold=0, rows='';
+  const flush=(cat)=>{
+    if(!cat) return;
+    rows+=`<tr class="sub">
+      <td></td><td style="color:var(--ink-2)">Summe ${CAT[cat].name}</td>
+      <td></td><td class="r mono">${fmt(catPlan)}</td>
+      <td class="r mono">${fmt(catSold)}</td><td></td>
+    </tr>`; catPlan=0; catSold=0;
+  };
+
+  P.forEach((p,i)=>{
+    if(p.cat!==prevCat){ flush(prevCat); prevCat=p.cat; }
+    const pv=p.price*p.ziel, sv=p.price*S.sold[i];
+    catPlan+=pv; catSold+=sv;
+    const pct=Math.min(Math.round(S.sold[i]/p.ziel*100)||0,100);
+    const fc=pct>=100?'done':pct>0?'':'';
+    const first=i===0||P[i-1].cat!==p.cat;
+    rows+=`<tr>
+      <td style="width:90px">${first?`<span class="tag t-${p.cat}">${CAT[p.cat].name}</span>`:''}</td>
+      <td>${p.label}</td>
+      <td class="r mono" style="color:var(--ink-3)">${fmt(p.price)}</td>
+      <td class="r mono">${fmt(pv)}</td>
+      <td class="r">
+        <div class="sold-wrap">
+          <span>${S.sold[i]}/${p.ziel}</span>
+          <input class="si" type="number" min="0" max="999" value="${S.sold[i]}" oninput="updSold(${i},this.value)">
+        </div>
+        <div class="progress-mini" style="margin-left:auto;margin-top:4px">
+          <div class="progress-mini-fill ${fc}" style="width:${pct}%"></div>
+        </div>
+      </td>
+      <td class="r mono" style="color:${sv>0?'var(--green)':'var(--ink-3)'}">${fmt(sv)}</td>
+    </tr>`;
+  });
+  flush(prevCat);
+
+  const {plan,sold}=calcGrand();
+  rows+=`<tr class="grand">
+    <td colspan="2">Gesamt</td>
+    <td></td>
+    <td class="r mono">${fmt(plan)}</td>
+    <td class="r mono">${fmt(sold)} verkauft</td>
+    <td class="r mono">${sold>=13000?'✓ Ziel erreicht':'⚠ '+fmt(13000-sold)+' fehlen'}</td>
+  </tr>`;
+
+  document.getElementById('ptable').innerHTML=`
+    <thead><tr>
+      <th>Kategorie</th><th>Produkt</th>
+      <th class="r">Preis</th><th class="r">Ziel</th>
+      <th class="r" style="width:130px">Verkauft</th>
+      <th class="r">Umsatz</th>
+    </tr></thead><tbody>${rows}</tbody>`;
+}
+
+function renderTabs(){
+  document.getElementById('tabs').innerHTML=MONTHS.map((m,i)=>
+    `<button class="tab ${i===S.tab?'active':''}" onclick="switchTab(${i})">${m.name}</button>`
+  ).join('');
+}
+
+function renderTasks(){
+  const m=MONTHS[S.tab];
+  let html=`<div class="mbanner">
+    <div><div class="mbanner-goal">${m.name}</div><div class="mbanner-sub">Kumuliertes Ziel</div></div>
+    <div class="mbanner-val">${m.target}</div>
+  </div>`;
+  m.weeks.forEach((w,wi)=>{
+    html+=`<div class="wblock"><div class="whead">${w.label}</div>
+    <table class="wt"><colgroup><col style="width:28px"><col style="width:60px"><col style="width:72px"><col></colgroup><tbody>`;
+    w.tasks.forEach((t,ti)=>{
+      const done=S.checks[S.tab]?.[wi]?.[ti];
+      html+=`<tr class="${done?'done':''}" onclick="toggleCheck(${S.tab},${wi},${ti})">
+        <td><div class="cb ${done?'on':''}">${done?'✓':''}</div></td>
+        <td class="who">${t.who}</td>
+        <td><span class="tag t-${t.cat}">${CAT[t.cat].name}</span></td>
+        <td><div class="tm">${t.tm}</div><div class="ts">${t.ts}</div></td>
+      </tr>`;
+    });
+    html+=`</tbody></table></div>`;
+  });
+  document.getElementById('tasks').innerHTML=html;
+}
+
+// ── INTERACTIONS ──────────────────────────────────────────────────────
+function updSold(i,v){
+  S.sold[i]=Math.max(0,parseInt(v)||0);
+  markDirty();
+  renderHeader(); renderMetrics(); renderHebel(); renderTable();
+}
+function toggleCheck(mi,wi,ti){
+  S.checks[mi][wi][ti]=!S.checks[mi][wi][ti];
+  markDirty();
+  renderHeader(); renderTasks(); calcTasks();
+}
+function switchTab(i){
+  S.tab=i; markDirty();
+  renderTabs(); renderTasks();
+}
+
+// Auto-save every 30s if dirty
+setInterval(()=>{ if(dirty) persist(); },30000);
+
+renderAll();
+</script>
+</body>
+</html>
